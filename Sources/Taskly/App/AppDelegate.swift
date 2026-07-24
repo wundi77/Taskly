@@ -4,6 +4,7 @@ import SwiftUI
 /// Owns the menu bar status item and the single toggleable app window.
 /// We manage the NSWindow manually (instead of a SwiftUI WindowGroup) so a
 /// click on the status item can precisely show/hide one specific window.
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem!
     var window: NSWindow?

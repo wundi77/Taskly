@@ -16,3 +16,7 @@
   - `build.sh` + `Packaging/Info.plist` zum Bauen/Starten ohne Xcode-Projekt
 
 **Nächste Schritte:** Nutzer baut mit `./build.sh` auf dem Mac, meldet Compiler-Fehler oder visuelle/funktionale Abweichungen zurück (insbesondere Drag & Drop und Menüleisten-Verhalten testen, da hier nicht kompiliert werden konnte).
+
+## Session 1 – Fix 1
+
+- Build-Fehler gemeldet: `AppDelegate` war nicht `@MainActor`, dadurch schlug die Property-Initialisierung `let store = TasklyStore()` fehl (`TasklyStore` ist `@MainActor`-isoliert). Fix: `AppDelegate` mit `@MainActor` annotiert (üblicher/empfohlener Pattern für `NSApplicationDelegate`-Klassen unter Swift Concurrency).
