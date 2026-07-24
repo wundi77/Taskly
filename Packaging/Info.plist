@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>Taskly</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.wunderwald.taskly</string>
+    <key>CFBundleName</key>
+    <string>Taskly</string>
+    <key>CFBundleDisplayName</key>
+    <string>Taskly</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Taskly</string>
+    <!-- Custom UTI for the internal drag-and-drop payload used when reordering
+         or moving cards between columns (see CardTransferItem.swift). Without
+         this declaration, drag sessions can start but drops silently fail. -->
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.wunderwald.taskly.card</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>Taskly Card</string>
+        </dict>
+    </array>
+</dict>
+</plist>
