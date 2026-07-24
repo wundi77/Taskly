@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct ContentView: View {
     @EnvironmentObject private var store: TasklyStore
@@ -38,10 +39,20 @@ struct ContentView: View {
         )
         .environment(\.theme, currentTheme)
         .frame(minWidth: 760, minHeight: 480)
+        .onAppear { applyAppAppearance() }
+        .onChange(of: isDarkMode) { _ in applyAppAppearance() }
     }
 
     private func createNewBoard() {
         let board = store.addBoard()
         editingBoardID = board.id
+    }
+
+    /// Native AppKit-backed controls (TextField input text, DatePicker, etc.)
+    /// follow the app's effective appearance, not our custom `theme` colors.
+    /// Forcing NSApp.appearance keeps them legible regardless of the system's
+    /// own Light/Dark setting.
+    private func applyAppAppearance() {
+        NSApp.appearance = NSAppearance(named: isDarkMode ? .darkAqua : .aqua)
     }
 }

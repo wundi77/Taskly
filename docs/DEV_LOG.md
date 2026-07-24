@@ -32,3 +32,11 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Board- vs. Listen-/Karten-Erstellung entflochten**: Header-Button heißt jetzt "Neues Board" und legt ein komplett neues Board an (Name direkt inline im Tab editierbar, nur per Return bestätigt; `TasklyStore.addBoard()`/`renameBoard(_:to:)`, `BoardTabsView.swift`). Die Spalten-Fußzeile heißt jetzt "+ weitere Karte" (unverändert: legt nur eine Karte in der jeweiligen Spalte an). Die "+ Weitere Liste"-Kachel zum Anlegen neuer Spalten bleibt unverändert bestehen.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Kontrast/Sichtbarkeit im Karten-Detail, Icon-Sichtbarkeit, Fenster-Transparenz, Dunkel/Hell-Umschaltung und das neue "Neues Board"/"+ weitere Karte"-Verhalten.
+
+## Session 1 – Fix 3
+
+- **Fenster wieder verschiebbar**: `newWindow.isMovableByWindowBackground = true` ergänzt (`AppDelegate.swift`) — durch die transparente Fensterkonfiguration aus Fix 2 ging das Ziehen per Titelleiste verloren.
+- **Schwarzer Text im Label-Name-Feld (Dunkelmodus) behoben**: native AppKit-Controls (Eingabetext, Cursor) folgten der echten System-Erscheinung statt unserem Theme. `ContentView.swift` setzt jetzt `NSApp.appearance` passend zu `isDarkMode` (initial + bei jeder Umschaltung).
+- **Rechtsklick-Menü auf dem Menüleisten-Icon** (`AppDelegate.swift`): Links-/Rechtsklick werden unterschieden; Rechtsklick zeigt ein Menü mit "Beim Start automatisch laden" (Häkchen, via `SMAppService.mainApp.register()/unregister()`) und "Beenden" (`NSApp.terminate(nil)`). Linksklick bleibt der bisherige Fenster-Toggle.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Fenster-Verschiebbarkeit, Lesbarkeit des Label-Name-Felds im Dunkelmodus, sowie das Rechtsklick-Menü (Login-Item-Häkchen, Beenden).
