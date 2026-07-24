@@ -4,6 +4,7 @@ struct ContentView: View {
     @EnvironmentObject private var store: TasklyStore
     @AppStorage("isDarkMode") private var isDarkMode: Bool = true
     @State private var searchText = ""
+    @State private var editingBoardID: UUID?
 
     private var currentTheme: any Theme {
         isDarkMode ? DarkTheme() : LightTheme()
@@ -14,9 +15,10 @@ struct ContentView: View {
             HeaderView(
                 boards: store.boards,
                 activeBoardID: $store.activeBoardID,
+                editingBoardID: $editingBoardID,
                 searchText: $searchText,
                 isDarkMode: $isDarkMode,
-                onAddTask: addTaskToFirstColumn
+                onAddBoard: createNewBoard
             )
 
             if let board = store.activeBoard {
@@ -28,13 +30,18 @@ struct ContentView: View {
                 Spacer()
             }
         }
-        .background(currentTheme.background)
+        .background(
+            ZStack {
+                VisualEffectView(material: .underWindowBackground, isDark: currentTheme.isDark)
+                currentTheme.background.opacity(0.92)
+            }
+        )
         .environment(\.theme, currentTheme)
         .frame(minWidth: 760, minHeight: 480)
     }
 
-    private func addTaskToFirstColumn() {
-        guard let board = store.activeBoard, let firstColumn = board.columns.sorted(by: { $0.order < $1.order }).first else { return }
-        store.addCard(title: "Neue Aufgabe", toColumn: firstColumn.id, inBoard: board.id)
+    private func createNewBoard() {
+        let board = store.addBoard()
+        editingBoardID = board.id
     }
 }

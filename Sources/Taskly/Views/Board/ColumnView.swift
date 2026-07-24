@@ -47,7 +47,7 @@ struct ColumnView: View {
             }
 
             if !isAddingCard {
-                GhostButton(title: "Karte hinzufügen") {
+                GhostButton(title: "weitere Karte") {
                     newCardTitle = ""
                     isAddingCard = true
                 }

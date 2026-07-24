@@ -20,3 +20,15 @@
 ## Session 1 – Fix 1
 
 - Build-Fehler gemeldet: `AppDelegate` war nicht `@MainActor`, dadurch schlug die Property-Initialisierung `let store = TasklyStore()` fehl (`TasklyStore` ist `@MainActor`-isoliert). Fix: `AppDelegate` mit `@MainActor` annotiert (üblicher/empfohlener Pattern für `NSApplicationDelegate`-Klassen unter Swift Concurrency).
+
+## Session 1 – Fix 2 (nach erstem erfolgreichen Build + Screenshots)
+
+Rückmeldung anhand von Screenshots umgesetzt:
+
+- **Karten-Detailansicht** (`CardDetailView.swift`): Standard-`Toggle`/`Picker`/`DatePicker`/`Button`-Controls durch selbst gestylte Varianten mit sichtbarem Hintergrund/Rahmen ersetzt (eigener Check-Row-Button für "Erledigt"/"Fälligkeitsdatum", Farb-Kreise statt System-Picker für Labels, rot umrandeter "Karte löschen"-Button, gefüllter "Fertig"-Button) — vorher kaum erkennbar/bedienbar auf dunklem Grund.
+- **Header-Icon** (`HeaderView.swift`): helles, abgerundetes Hintergrund-Plättchen hinter dem App-Icon, damit die dunklen Bildanteile nicht mit dem Header verschmelzen.
+- **Fenster-Transparenz**: `AppDelegate.swift` setzt das Fenster jetzt `isOpaque = false`/`backgroundColor = .clear`; `ContentView.swift` legt eine `NSVisualEffectView` (`.underWindowBackground`) unter ein leicht transparentes (`.opacity(0.92)`) Theme-Hintergrund-Overlay, `DarkTheme.background` von `#121212` auf `#232323` aufgehellt.
+- **Dunkel/Hell-Umschalter reparlert**: der segmentierte `Picker` (der nichts tat) wurde durch zwei explizite Buttons ersetzt, die `isDarkMode` direkt setzen.
+- **Board- vs. Listen-/Karten-Erstellung entflochten**: Header-Button heißt jetzt "Neues Board" und legt ein komplett neues Board an (Name direkt inline im Tab editierbar, nur per Return bestätigt; `TasklyStore.addBoard()`/`renameBoard(_:to:)`, `BoardTabsView.swift`). Die Spalten-Fußzeile heißt jetzt "+ weitere Karte" (unverändert: legt nur eine Karte in der jeweiligen Spalte an). Die "+ Weitere Liste"-Kachel zum Anlegen neuer Spalten bleibt unverändert bestehen.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Kontrast/Sichtbarkeit im Karten-Detail, Icon-Sichtbarkeit, Fenster-Transparenz, Dunkel/Hell-Umschaltung und das neue "Neues Board"/"+ weitere Karte"-Verhalten.

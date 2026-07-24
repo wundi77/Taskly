@@ -33,10 +33,10 @@ protocol Theme {
 struct DarkTheme: Theme {
     let isDark = true
 
-    let background = Color(hex: "121212")
-    let headerBackground = Color(hex: "1A1A1A")
+    let background = Color(hex: "232323")
+    let headerBackground = Color(hex: "242424")
     let headerBorder = Color.white.opacity(0.08)
-    let columnBackground = Color.white.opacity(0.03)
+    let columnBackground = Color.white.opacity(0.04)
     let cardSurface = Color(hex: "1E1E1E")
     let cardBorder = Color.white.opacity(0.06)
 

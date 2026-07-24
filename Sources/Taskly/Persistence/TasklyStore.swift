@@ -58,11 +58,19 @@ final class TasklyStore: ObservableObject {
 
     // MARK: - Boards
 
-    func addBoard(name: String) {
+    @discardableResult
+    func addBoard(name: String = "Neues Board") -> Board {
         let maxOrder = boards.map(\.order).max() ?? -1
         let board = Board(name: name, order: maxOrder + 1, columns: [])
         boards.append(board)
         activeBoardID = board.id
+        save()
+        return board
+    }
+
+    func renameBoard(_ boardID: UUID, to newName: String) {
+        guard let bIdx = boardIndex(boardID) else { return }
+        boards[bIdx].name = newName
         save()
     }
 

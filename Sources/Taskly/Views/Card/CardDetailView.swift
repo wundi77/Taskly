@@ -22,62 +22,89 @@ struct CardDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 22) {
                 TextField("Titel", text: $card.title)
                     .textFieldStyle(.plain)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundStyle(theme.textPrimary)
+                    .padding(10)
+                    .background(theme.cardSurface)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(theme.cardBorder, lineWidth: 1)
+                    )
 
-                Toggle("Erledigt", isOn: $card.isCompleted)
-                    .toggleStyle(.checkbox)
+                checkRow(title: "Erledigt", isOn: $card.isCompleted)
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Beschreibung").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.textSecondary)
-                    TextEditor(text: $card.descriptionText)
-                        .frame(minHeight: 80)
-                        .scrollContentBackground(.hidden)
-                        .background(theme.background.opacity(0.4))
-                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                }
+                sectionLabel("Beschreibung")
+                TextEditor(text: $card.descriptionText)
+                    .font(.system(size: 13))
+                    .foregroundStyle(theme.textPrimary)
+                    .frame(minHeight: 90)
+                    .scrollContentBackground(.hidden)
+                    .padding(6)
+                    .background(theme.cardSurface)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(theme.cardBorder, lineWidth: 1)
+                    )
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Labels").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.textSecondary)
-                    HStack(spacing: 6) {
-                        ForEach(card.labels) { label in
-                            HStack(spacing: 4) {
-                                LabelChipView(label: label)
-                                Button {
-                                    card.labels.removeAll { $0.id == label.id }
-                                } label: {
-                                    Image(systemName: "xmark").font(.system(size: 9))
+                VStack(alignment: .leading, spacing: 10) {
+                    sectionLabel("Labels")
+                    if !card.labels.isEmpty {
+                        HStack(spacing: 6) {
+                            ForEach(card.labels) { label in
+                                HStack(spacing: 4) {
+                                    LabelChipView(label: label)
+                                    Button {
+                                        card.labels.removeAll { $0.id == label.id }
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .font(.system(size: 9, weight: .bold))
+                                            .foregroundStyle(theme.textSecondary)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
                     }
-                    HStack {
-                        Picker("", selection: $newLabelColor) {
+
+                    HStack(spacing: 10) {
+                        HStack(spacing: 6) {
                             ForEach(CardLabel.paletteNames, id: \.self) { name in
-                                Text(name.capitalized).tag(name)
+                                colorSwatch(name)
                             }
                         }
-                        .labelsHidden()
-                        .frame(width: 120)
+
                         TextField("Label-Name", text: $newLabelName)
-                            .textFieldStyle(.roundedBorder)
-                        Button("Hinzufügen") {
-                            let trimmed = newLabelName.trimmingCharacters(in: .whitespacesAndNewlines)
-                            guard !trimmed.isEmpty else { return }
-                            card.labels.append(CardLabel(name: trimmed, colorName: newLabelColor))
-                            newLabelName = ""
-                        }
+                            .textFieldStyle(.plain)
+                            .font(.system(size: 13))
+                            .foregroundStyle(theme.textPrimary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 7)
+                            .background(theme.cardSurface)
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(theme.cardBorder, lineWidth: 1)
+                            )
+                            .onSubmit(addLabel)
+
+                        Button("Hinzufügen", action: addLabel)
+                            .buttonStyle(.plain)
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(theme.onPrimary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 7)
+                            .background(theme.primary)
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Toggle("Fälligkeitsdatum", isOn: $hasDueDate)
-                        .toggleStyle(.checkbox)
-                        .font(.system(size: 12, weight: .semibold))
+                VStack(alignment: .leading, spacing: 10) {
+                    checkRow(title: "Fälligkeitsdatum", isOn: $hasDueDate)
                     if hasDueDate {
                         DatePicker("", selection: Binding(
                             get: { card.dueDate ?? Date() },
@@ -85,12 +112,19 @@ struct CardDetailView: View {
                         ), displayedComponents: .date)
                         .labelsHidden()
                         .datePickerStyle(.field)
+                        .padding(8)
+                        .background(theme.cardSurface)
+                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .stroke(theme.cardBorder, lineWidth: 1)
+                        )
                     }
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text("Checkliste").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.textSecondary)
+                        sectionLabel("Checkliste")
                         Spacer()
                         if let progress = card.checklistProgressText {
                             Text(progress).font(.system(size: 12)).foregroundStyle(theme.textSecondary)
@@ -99,21 +133,33 @@ struct CardDetailView: View {
                     ChecklistEditView(checklist: $card.checklist)
                 }
 
+                Rectangle().fill(theme.cardBorder).frame(height: 1)
+
                 HStack {
-                    Button(role: .destructive) {
+                    Button {
                         store.deleteCard(card.id, in: boardID)
                         dismiss()
                     } label: {
                         Text("Karte löschen")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(theme.overdue)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
                     }
+                    .buttonStyle(.plain)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .stroke(theme.overdue, lineWidth: 1.5)
+                    )
+
                     Spacer()
-                    Button("Fertig") { dismiss() }
-                        .keyboardShortcut(.defaultAction)
+
+                    PrimaryPillButton(title: "Fertig", systemImage: "checkmark") { dismiss() }
                 }
             }
             .padding(24)
         }
-        .frame(width: 480, height: 560)
+        .frame(width: 480, height: 620)
         .background(theme.background)
         .onChange(of: hasDueDate) { enabled in
             if !enabled { card.dueDate = nil }
@@ -121,5 +167,46 @@ struct CardDetailView: View {
         .onChange(of: card) { newValue in
             store.updateCard(newValue, in: boardID)
         }
+    }
+
+    private func sectionLabel(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(theme.textSecondary)
+    }
+
+    private func checkRow(title: String, isOn: Binding<Bool>) -> some View {
+        Button {
+            isOn.wrappedValue.toggle()
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: isOn.wrappedValue ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(isOn.wrappedValue ? theme.primary : theme.textSecondary)
+                Text(title)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(theme.textPrimary)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func colorSwatch(_ name: String) -> some View {
+        Circle()
+            .fill(theme.labelForeground(for: name))
+            .frame(width: 20, height: 20)
+            .overlay(
+                Circle().stroke(theme.textPrimary, lineWidth: newLabelColor == name ? 2 : 0)
+            )
+            .overlay(
+                Circle().stroke(theme.cardBorder, lineWidth: 1)
+            )
+            .onTapGesture { newLabelColor = name }
+    }
+
+    private func addLabel() {
+        let trimmed = newLabelName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        card.labels.append(CardLabel(name: trimmed, colorName: newLabelColor))
+        newLabelName = ""
     }
 }

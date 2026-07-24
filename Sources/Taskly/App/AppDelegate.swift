@@ -41,6 +41,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             newWindow.minSize = NSSize(width: 760, height: 480)
             newWindow.isReleasedWhenClosed = false
             newWindow.titlebarAppearsTransparent = true
+            newWindow.isOpaque = false
+            newWindow.backgroundColor = .clear
             window = newWindow
         }
         window?.center()
