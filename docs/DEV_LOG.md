@@ -47,3 +47,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Hauptfläche transparenter**: `BoardView.swift` malte bisher einen komplett blickdichten `theme.background` über die Spalten/Karten-Fläche, wodurch die in Fix 2 eingebaute Fenster-Transparenz dort gar nicht sichtbar war. Jetzt `theme.background.opacity(0.35)`, zusätzlich die globale Overlay-Deckkraft in `ContentView.swift` von `0.92` auf `0.75` gesenkt — der Header (eigene, unveränderte `VisualEffectView`) bleibt davon unberührt, Karten selbst bleiben unverändert deckend/lesbar.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Board-Löschen (Rechtsklick auf Board-Tab) und die stärkere Transparenz der Haupt-/Kartenfläche in Dunkel- und Hellmodus.
+
+## Session 1 – Fix 5
+
+- **Fenster-Inhalt "schwebte" bei kurzem Inhalt (z.B. leeres Board ohne Spalten)**: `ContentView.swift` gab dem Wurzel-`VStack` bisher keine `maxWidth`/`maxHeight`, wodurch SwiftUI den (kürzeren) Inhalt innerhalb des transparenten Fensters zentrierte statt ihn oben an der Titelleiste zu verankern — sichtbar als Lücke zwischen Titelleiste und Header. Fix: `.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)` auf den Wurzel-Inhalt, sodass Header/Board immer oben anliegen und eventueller Leerraum unten (transparent) erscheint statt als Lücke oben.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft insbesondere ein Board ohne Spalten (oder ein neu angelegtes Board) — Header sollte jetzt direkt unter der Titelleiste bleiben, kein Schweben mehr.

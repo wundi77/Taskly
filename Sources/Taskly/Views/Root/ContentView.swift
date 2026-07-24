@@ -31,6 +31,12 @@ struct ContentView: View {
                 Spacer()
             }
         }
+        // Always fill whatever space the window gives us, anchored to the
+        // top: the header must stay flush against the titlebar. Without this,
+        // a short board (e.g. no columns yet) renders smaller than the
+        // window and SwiftUI centers it, leaving a gap between the titlebar
+        // and the header instead of extra space at the bottom.
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(
             ZStack {
                 VisualEffectView(material: .underWindowBackground, isDark: currentTheme.isDark)
