@@ -53,3 +53,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Fenster-Inhalt "schwebte" bei kurzem Inhalt (z.B. leeres Board ohne Spalten)**: `ContentView.swift` gab dem Wurzel-`VStack` bisher keine `maxWidth`/`maxHeight`, wodurch SwiftUI den (kürzeren) Inhalt innerhalb des transparenten Fensters zentrierte statt ihn oben an der Titelleiste zu verankern — sichtbar als Lücke zwischen Titelleiste und Header. Fix: `.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)` auf den Wurzel-Inhalt, sodass Header/Board immer oben anliegen und eventueller Leerraum unten (transparent) erscheint statt als Lücke oben.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft insbesondere ein Board ohne Spalten (oder ein neu angelegtes Board) — Header sollte jetzt direkt unter der Titelleiste bleiben, kein Schweben mehr.
+
+## Session 1 – Fix 6
+
+- **Titelleiste (Ampel-Symbole + "Taskly"-Titel) komplett entfernt**: `AppDelegate.swift` erzeugt das Fenster jetzt ohne `.titled` im `styleMask` (nur noch `.resizable, .fullSizeContentView`), sodass der eigene App-Header direkt am oberen Fensterrand beginnt. Da es keine Titelleiste mehr zum Ziehen gibt, bleibt `isMovableByWindowBackground = true` bestehen — das Fenster lässt sich weiterhin per Klick auf freie Hintergrundflächen verschieben, per Rand weiterhin per Größe ziehen. Schließen/Beenden weiterhin über das Menüleisten-Icon (Klick zum Ausblenden, Rechtsklick → "Beenden").
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` — Fenster sollte jetzt ohne sichtbaren Titelleisten-Streifen direkt mit dem App-Header beginnen, weiterhin per Hintergrund verschiebbar und per Rand skalierbar sein.

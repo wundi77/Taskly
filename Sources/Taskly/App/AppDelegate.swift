@@ -46,16 +46,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 .environmentObject(store)
             let hosting = NSHostingController(rootView: contentView)
             let newWindow = NSWindow(contentViewController: hosting)
-            newWindow.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+            // No .titled: this removes the titlebar strip (traffic lights +
+            // title) entirely so our own SwiftUI header starts right at the
+            // window's top edge. Still .resizable so edges can be dragged.
+            newWindow.styleMask = [.resizable, .fullSizeContentView]
             newWindow.title = "Taskly"
             newWindow.setContentSize(NSSize(width: 1200, height: 800))
             newWindow.minSize = NSSize(width: 760, height: 480)
             newWindow.isReleasedWhenClosed = false
-            newWindow.titlebarAppearsTransparent = true
             newWindow.isOpaque = false
             newWindow.backgroundColor = .clear
-            // A transparent/custom-background window loses the usual titlebar
-            // drag behavior in some AppKit versions; this restores it.
+            // Without a titlebar there's no strip left to drag by, so the
+            // whole window background becomes the drag handle.
             newWindow.isMovableByWindowBackground = true
             window = newWindow
         }
