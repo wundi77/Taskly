@@ -59,3 +59,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Titelleiste (Ampel-Symbole + "Taskly"-Titel) komplett entfernt**: `AppDelegate.swift` erzeugt das Fenster jetzt ohne `.titled` im `styleMask` (nur noch `.resizable, .fullSizeContentView`), sodass der eigene App-Header direkt am oberen Fensterrand beginnt. Da es keine Titelleiste mehr zum Ziehen gibt, bleibt `isMovableByWindowBackground = true` bestehen — das Fenster lässt sich weiterhin per Klick auf freie Hintergrundflächen verschieben, per Rand weiterhin per Größe ziehen. Schließen/Beenden weiterhin über das Menüleisten-Icon (Klick zum Ausblenden, Rechtsklick → "Beenden").
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` — Fenster sollte jetzt ohne sichtbaren Titelleisten-Streifen direkt mit dem App-Header beginnen, weiterhin per Hintergrund verschiebbar und per Rand skalierbar sein.
+
+## Session 1 – Fix 7
+
+- **Keine Texteingabe mehr möglich (Bug durch Fix 6)**: Ein Fenster ohne `.titled` im `styleMask` gilt für AppKit als "borderless" und wird standardmäßig **nicht** zum Key-Window — dadurch nahm gar kein Textfeld mehr Tastatureingaben an, egal wo. Fix: `AppDelegate.swift` verwendet jetzt eine kleine `NSWindow`-Unterklasse `KeyableWindow`, die `canBecomeKey`/`canBecomeMain` auf `true` überschreibt, damit das Fenster trotz fehlender Titelleiste normal fokussierbar bleibt und Texteingabe wieder funktioniert.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, ob Texteingabe (Titel, Beschreibung, Label-Name, Board-Name, Checklisten-Punkte etc.) überall wieder funktioniert.

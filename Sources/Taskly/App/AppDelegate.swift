@@ -2,6 +2,15 @@ import AppKit
 import SwiftUI
 import ServiceManagement
 
+/// A borderless (no .titled) NSWindow does not become key by default, which
+/// silently blocks all keyboard/text input in its content — no TextField
+/// anywhere would accept typing. Overriding these restores normal focus
+/// behavior for our titlebar-less window.
+final class KeyableWindow: NSWindow {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
+}
+
 /// Owns the menu bar status item and the single toggleable app window.
 /// We manage the NSWindow manually (instead of a SwiftUI WindowGroup) so a
 /// click on the status item can precisely show/hide one specific window.
@@ -45,7 +54,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let contentView = ContentView()
                 .environmentObject(store)
             let hosting = NSHostingController(rootView: contentView)
-            let newWindow = NSWindow(contentViewController: hosting)
+            let newWindow = KeyableWindow(contentViewController: hosting)
             // No .titled: this removes the titlebar strip (traffic lights +
             // title) entirely so our own SwiftUI header starts right at the
             // window's top edge. Still .resizable so edges can be dragged.
