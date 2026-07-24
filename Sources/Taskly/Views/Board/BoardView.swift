@@ -29,6 +29,6 @@ struct BoardView: View {
             }
             .padding(20)
         }
-        .background(theme.background)
+        .background(theme.background.opacity(0.35))
     }
 }

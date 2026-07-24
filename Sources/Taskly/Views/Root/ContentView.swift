@@ -34,7 +34,7 @@ struct ContentView: View {
         .background(
             ZStack {
                 VisualEffectView(material: .underWindowBackground, isDark: currentTheme.isDark)
-                currentTheme.background.opacity(0.92)
+                currentTheme.background.opacity(0.75)
             }
         )
         .environment(\.theme, currentTheme)

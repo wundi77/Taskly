@@ -40,3 +40,10 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Rechtsklick-Menü auf dem Menüleisten-Icon** (`AppDelegate.swift`): Links-/Rechtsklick werden unterschieden; Rechtsklick zeigt ein Menü mit "Beim Start automatisch laden" (Häkchen, via `SMAppService.mainApp.register()/unregister()`) und "Beenden" (`NSApp.terminate(nil)`). Linksklick bleibt der bisherige Fenster-Toggle.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Fenster-Verschiebbarkeit, Lesbarkeit des Label-Name-Felds im Dunkelmodus, sowie das Rechtsklick-Menü (Login-Item-Häkchen, Beenden).
+
+## Session 1 – Fix 4
+
+- **Boards löschbar**: `TasklyStore.deleteBoard(_:)` ergänzt; `BoardTabsView.swift` bekommt ein Kontextmenü (Rechtsklick auf den Board-Tab) mit "Umbenennen" und "Board löschen". Wird das aktive Board gelöscht, springt die Ansicht automatisch zum nächsten verbliebenen Board (oder zeigt "Kein Board vorhanden").
+- **Hauptfläche transparenter**: `BoardView.swift` malte bisher einen komplett blickdichten `theme.background` über die Spalten/Karten-Fläche, wodurch die in Fix 2 eingebaute Fenster-Transparenz dort gar nicht sichtbar war. Jetzt `theme.background.opacity(0.35)`, zusätzlich die globale Overlay-Deckkraft in `ContentView.swift` von `0.92` auf `0.75` gesenkt — der Header (eigene, unveränderte `VisualEffectView`) bleibt davon unberührt, Karten selbst bleiben unverändert deckend/lesbar.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh`, prüft Board-Löschen (Rechtsklick auf Board-Tab) und die stärkere Transparenz der Haupt-/Kartenfläche in Dunkel- und Hellmodus.

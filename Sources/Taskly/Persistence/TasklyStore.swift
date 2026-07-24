@@ -74,6 +74,14 @@ final class TasklyStore: ObservableObject {
         save()
     }
 
+    func deleteBoard(_ boardID: UUID) {
+        boards.removeAll { $0.id == boardID }
+        if activeBoardID == boardID {
+            activeBoardID = boards.sorted { $0.order < $1.order }.first?.id
+        }
+        save()
+    }
+
     // MARK: - Columns
 
     func addColumn(title: String, toBoard boardID: UUID) {

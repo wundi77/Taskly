@@ -41,6 +41,14 @@ struct BoardTabsView: View {
                             .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
+                    .contextMenu {
+                        Button("Umbenennen") {
+                            editingBoardID = board.id
+                        }
+                        Button("Board löschen", role: .destructive) {
+                            store.deleteBoard(board.id)
+                        }
+                    }
                 }
             }
         }
