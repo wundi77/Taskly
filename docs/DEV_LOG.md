@@ -77,3 +77,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Karten ließen sich innerhalb einer Spalte verschieben, aber nicht zwischen Spalten**: die verwendete `Transferable`/`.draggable`/`.dropDestination`-API (macOS 13+) hat ein bekanntes Rough-Edge bei Drops über unabhängige `ScrollView`-Container hinweg (jede Spalte hat ihre eigene). Fix: Umstellung auf das ältere, robustere `NSItemProvider`-basierte `.onDrag`/`.onDrop` (`CardTransferItem.swift`, `CardView.swift`, `ColumnView.swift`) — JSON-kodierter Payload über die weiterhin bestehende eigene UTI `com.wunderwald.taskly.card`.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft insbesondere das Verschieben einer Karte in eine andere Spalte (leerer Bereich und auf eine existierende Karte), zusätzlich weiterhin die Umsortierung innerhalb einer Spalte.
+
+## Session 1 – Fix 10
+
+- **Drop in eine komplett leere Spalte funktionierte nicht**: Eine `ScrollView` ohne jeglichen Karten-Inhalt kollabiert intern auf (nahezu) null Höhe, wodurch die per `.onDrop` registrierte Zielfläche dort keine echte Ausdehnung mehr hatte. Fix in `ColumnView.swift`: ein `Color.clear` liegt jetzt als `ZStack`-Ebene permanent unter der `ScrollView` und garantiert so immer eine volle, greifbare Dropfläche über die ganze Spaltenhöhe — unabhängig davon, ob und wie viele Karten die Spalte enthält.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft gezielt: neue, leere Liste anlegen und eine Karte aus einer anderen Spalte hineinziehen.

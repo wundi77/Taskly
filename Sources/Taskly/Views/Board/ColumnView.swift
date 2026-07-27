@@ -22,17 +22,25 @@ struct ColumnView: View {
         VStack(alignment: .leading, spacing: 12) {
             header
 
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(sortedCards) { card in
-                        CardView(card: card, columnID: column.id, boardID: boardID)
-                    }
+            ZStack {
+                // Guarantees a full-height drop target even when the column
+                // has zero cards: an empty ScrollView's content (and with it
+                // its droppable area) can otherwise collapse to nothing, so
+                // dropping a card into an empty column silently failed.
+                Color.clear
 
-                    if isAddingCard {
-                        newCardField
+                ScrollView {
+                    VStack(spacing: 10) {
+                        ForEach(sortedCards) { card in
+                            CardView(card: card, columnID: column.id, boardID: boardID)
+                        }
+
+                        if isAddingCard {
+                            newCardField
+                        }
                     }
+                    .padding(.bottom, 4)
                 }
-                .padding(.bottom, 4)
             }
             .frame(maxHeight: .infinity)
             .background(
