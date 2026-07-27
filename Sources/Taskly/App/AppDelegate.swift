@@ -65,9 +65,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             newWindow.isReleasedWhenClosed = false
             newWindow.isOpaque = false
             newWindow.backgroundColor = .clear
-            // Without a titlebar there's no strip left to drag by, so the
-            // whole window background becomes the drag handle.
-            newWindow.isMovableByWindowBackground = true
+            // isMovableByWindowBackground stays OFF: turning it on would make
+            // AppKit intercept every click-and-drag anywhere in the window
+            // (including on cards) as a window move, before SwiftUI's own
+            // .draggable() drag-and-drop gesture ever gets a chance to run.
+            // Dragging the window is instead handled by a small drag handle
+            // placed behind the header only (see HeaderView/WindowDragHandleView).
             window = newWindow
         }
         window?.center()

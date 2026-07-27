@@ -65,3 +65,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Keine Texteingabe mehr möglich (Bug durch Fix 6)**: Ein Fenster ohne `.titled` im `styleMask` gilt für AppKit als "borderless" und wird standardmäßig **nicht** zum Key-Window — dadurch nahm gar kein Textfeld mehr Tastatureingaben an, egal wo. Fix: `AppDelegate.swift` verwendet jetzt eine kleine `NSWindow`-Unterklasse `KeyableWindow`, die `canBecomeKey`/`canBecomeMain` auf `true` überschreibt, damit das Fenster trotz fehlender Titelleiste normal fokussierbar bleibt und Texteingabe wieder funktioniert.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, ob Texteingabe (Titel, Beschreibung, Label-Name, Board-Name, Checklisten-Punkte etc.) überall wieder funktioniert.
+
+## Session 1 – Fix 8
+
+- **Karten ließen sich nicht mehr verschieben (Bug durch Fix 6)**: `isMovableByWindowBackground = true` hat jeden Klick-und-Zieh-Vorgang irgendwo im Fenster als Fenster-Verschieben abgefangen, noch bevor die SwiftUI-`.draggable()`-Geste auf den Karten zum Zug kam — komplettes Fenster bewegte sich statt der Karte. Fix: `isMovableByWindowBackground` wieder aus (`AppDelegate.swift`). Stattdessen übernimmt jetzt gezielt der Header selbst das Verschieben: `VisualEffectView`/`DraggableVisualEffectView` (`Theme/VisualEffectView.swift`) hat ein neues `isWindowDraggable`-Flag, das per `mouseDown` → `window?.performDrag(with:)` nur dort aktiv ist, wo `HeaderView.swift` es setzt. Der Board-/Kartenbereich (`ContentView.swift`s großflächige `VisualEffectView`) bleibt ohne dieses Flag unverändert nicht-verschiebend, damit Karten-Drag-and-Drop wieder normal funktioniert.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh`: Karten innerhalb einer Spalte umsortieren und zwischen Spalten verschieben testen, außerdem prüfen, dass sich das Fenster weiterhin durch Ziehen an einer leeren Stelle im Header verschieben lässt.

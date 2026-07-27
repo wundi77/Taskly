@@ -47,7 +47,7 @@ struct HeaderView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
         .background(
-            VisualEffectView(material: .headerView, isDark: theme.isDark)
+            VisualEffectView(material: .headerView, isDark: theme.isDark, isWindowDraggable: true)
         )
         .overlay(alignment: .bottom) {
             Rectangle().fill(theme.headerBorder).frame(height: 1)
