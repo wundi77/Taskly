@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CardView: View {
     var card: Card
@@ -78,13 +79,15 @@ struct CardView: View {
         .shadow(color: .black.opacity(theme.isDark ? 0.25 : 0.06), radius: 8, x: 0, y: 4)
         .contentShape(Rectangle())
         .onTapGesture { showDetail = true }
-        .draggable(CardTransferItem(cardID: card.id, sourceColumnID: columnID))
-        .dropDestination(for: CardTransferItem.self) { items, _ in
-            guard let item = items.first, item.cardID != card.id else { return false }
-            store.moveCard(cardID: item.cardID, fromColumn: item.sourceColumnID, toColumn: columnID, beforeCardID: card.id, inBoard: boardID)
+        .onDrag {
+            CardTransferItem(cardID: card.id, sourceColumnID: columnID).toItemProvider()
+        }
+        .onDrop(of: [.tasklyCard], isTargeted: $isDropTargeted) { providers in
+            CardTransferItem.from(providers: providers) { item in
+                guard let item, item.cardID != card.id else { return }
+                store.moveCard(cardID: item.cardID, fromColumn: item.sourceColumnID, toColumn: columnID, beforeCardID: card.id, inBoard: boardID)
+            }
             return true
-        } isTargeted: { targeted in
-            isDropTargeted = targeted
         }
         .sheet(isPresented: $showDetail) {
             CardDetailView(card: card, columnID: columnID, boardID: boardID)

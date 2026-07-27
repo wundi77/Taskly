@@ -38,7 +38,9 @@ Alle Mutationen (Karten/Spalten/Boards hinzufügen, umbenennen, löschen, versch
 
 ## Drag & Drop
 
-`CardTransferItem` (Karten-ID + Quellspalten-ID) conforms `Transferable` (via `CodableRepresentation` mit einer eigenen UTI `com.wunderwald.taskly.card`, deklariert in `Packaging/Info.plist` unter `UTExportedTypeDeclarations`). Jede Karte ist `.draggable(...)`; sowohl jede Karte als auch der leere Bereich am Spaltenende sind `.dropDestination(for: CardTransferItem.self)`. `TasklyStore.moveCard(...)` ist die einzige Stelle, die die Reihenfolge neu berechnet.
+`CardTransferItem` (Karten-ID + Quellspalten-ID) wird über das klassische `NSItemProvider`-basierte `.onDrag`/`.onDrop` verschickt (eigene UTI `com.wunderwald.taskly.card`, deklariert in `Packaging/Info.plist` unter `UTExportedTypeDeclarations`; JSON-Kodierung über `registerDataRepresentation`/`loadDataRepresentation`). Jede Karte hat `.onDrag { ... }`; sowohl jede Karte als auch der leere Bereich am Spaltenende haben `.onDrop(of: [.tasklyCard], isTargeted:perform:)`. `TasklyStore.moveCard(...)` ist die einzige Stelle, die die Reihenfolge neu berechnet.
+
+**Hinweis:** Ursprünglich wurde die neuere `Transferable`/`.draggable`/`.dropDestination`-API (macOS 13+) verwendet. Damit funktionierte Umsortieren *innerhalb* einer Spalte zuverlässig, das Verschieben *zwischen* Spalten (unterschiedliche `ScrollView`-Container) aber nicht — ein bekanntes Rough-Edge dieser API bei Drops über unabhängige Scroll-Container hinweg. Umgestellt auf das ältere, robustere `onDrag`/`onDrop`.
 
 **Bekannte Fehlerquelle Nr. 1**, falls Drag & Drop kompiliert, aber nichts passiert: die UTI-Deklaration in `Packaging/Info.plist` fehlt oder ist falsch geschrieben.
 
@@ -52,6 +54,6 @@ Alle Mutationen (Karten/Spalten/Boards hinzufügen, umbenennen, löschen, versch
 
 ## Bekannte Risiken / offene Punkte
 
-- Exakte Signaturen von `.dropDestination`/`.draggable` (macOS-13-SDK) wurden nach bestem Wissen geschrieben, konnten hier aber nicht kompiliert werden — bei Compiler-Fehlern hier zuerst nachsehen (Xcode-Autovervollständigung/Quick Help prüfen). Fallback: klassisches `NSItemProvider` + `.onDrag`/`.onDrop`.
+- Exakte Signaturen von `.onDrag`/`.onDrop` wurden nach bestem Wissen geschrieben, konnten hier aber nicht kompiliert werden — bei Compiler-Fehlern hier zuerst nachsehen (Xcode-Autovervollständigung/Quick Help prüfen).
 - Schrift: aktuell Systemschrift (San Francisco) statt Inter, um das Risiko von Font-Bundling-Problemen (PostScript-Namen) zu vermeiden. Bei Bedarf später nachrüstbar.
 - App ist unsigniert; lokale Builds sollten ohne Gatekeeper-Probleme laufen, da sie nicht aus dem Internet heruntergeladen (kein Quarantäne-Flag) wurden.

@@ -71,3 +71,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Karten ließen sich nicht mehr verschieben (Bug durch Fix 6)**: `isMovableByWindowBackground = true` hat jeden Klick-und-Zieh-Vorgang irgendwo im Fenster als Fenster-Verschieben abgefangen, noch bevor die SwiftUI-`.draggable()`-Geste auf den Karten zum Zug kam — komplettes Fenster bewegte sich statt der Karte. Fix: `isMovableByWindowBackground` wieder aus (`AppDelegate.swift`). Stattdessen übernimmt jetzt gezielt der Header selbst das Verschieben: `VisualEffectView`/`DraggableVisualEffectView` (`Theme/VisualEffectView.swift`) hat ein neues `isWindowDraggable`-Flag, das per `mouseDown` → `window?.performDrag(with:)` nur dort aktiv ist, wo `HeaderView.swift` es setzt. Der Board-/Kartenbereich (`ContentView.swift`s großflächige `VisualEffectView`) bleibt ohne dieses Flag unverändert nicht-verschiebend, damit Karten-Drag-and-Drop wieder normal funktioniert.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh`: Karten innerhalb einer Spalte umsortieren und zwischen Spalten verschieben testen, außerdem prüfen, dass sich das Fenster weiterhin durch Ziehen an einer leeren Stelle im Header verschieben lässt.
+
+## Session 1 – Fix 9
+
+- **Karten ließen sich innerhalb einer Spalte verschieben, aber nicht zwischen Spalten**: die verwendete `Transferable`/`.draggable`/`.dropDestination`-API (macOS 13+) hat ein bekanntes Rough-Edge bei Drops über unabhängige `ScrollView`-Container hinweg (jede Spalte hat ihre eigene). Fix: Umstellung auf das ältere, robustere `NSItemProvider`-basierte `.onDrag`/`.onDrop` (`CardTransferItem.swift`, `CardView.swift`, `ColumnView.swift`) — JSON-kodierter Payload über die weiterhin bestehende eigene UTI `com.wunderwald.taskly.card`.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft insbesondere das Verschieben einer Karte in eine andere Spalte (leerer Bereich und auf eine existierende Karte), zusätzlich weiterhin die Umsortierung innerhalb einer Spalte.

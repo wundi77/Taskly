@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ColumnView: View {
     var column: BoardColumn
@@ -38,12 +39,12 @@ struct ColumnView: View {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(isDropTargeted ? theme.primary : .clear, lineWidth: 2)
             )
-            .dropDestination(for: CardTransferItem.self) { items, _ in
-                guard let item = items.first else { return false }
-                store.moveCard(cardID: item.cardID, fromColumn: item.sourceColumnID, toColumn: column.id, beforeCardID: nil, inBoard: boardID)
+            .onDrop(of: [.tasklyCard], isTargeted: $isDropTargeted) { providers in
+                CardTransferItem.from(providers: providers) { item in
+                    guard let item else { return }
+                    store.moveCard(cardID: item.cardID, fromColumn: item.sourceColumnID, toColumn: column.id, beforeCardID: nil, inBoard: boardID)
+                }
                 return true
-            } isTargeted: { targeted in
-                isDropTargeted = targeted
             }
 
             if !isAddingCard {
