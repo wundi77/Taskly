@@ -37,5 +37,15 @@ cp "Packaging/Info.plist" "${APP_BUNDLE}/Contents/Info.plist"
 # icon are all loaded from this one file at runtime via NSImage).
 cp "Resources/AppIcon.icns" "${APP_BUNDLE}/Contents/Resources/AppIcon.icns"
 
+echo "==> Aktualisiere Icon-/LaunchServices-Cache ..."
+# Finder/LaunchServices can stubbornly keep showing the generic placeholder
+# icon for an app bundle it has already seen at this path (common with
+# unsigned bundles rebuilt in place during development). Force a refresh so
+# the real icon shows up without the user having to intervene manually.
+touch "$APP_BUNDLE"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+"$LSREGISTER" -f "$APP_BUNDLE" >/dev/null 2>&1 || true
+killall Finder >/dev/null 2>&1 || true
+
 echo "==> Fertig. Starte ${APP_BUNDLE} ..."
 open "$APP_BUNDLE"
