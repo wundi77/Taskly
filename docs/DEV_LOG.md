@@ -83,3 +83,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Drop in eine komplett leere Spalte funktionierte nicht**: Eine `ScrollView` ohne jeglichen Karten-Inhalt kollabiert intern auf (nahezu) null Höhe, wodurch die per `.onDrop` registrierte Zielfläche dort keine echte Ausdehnung mehr hatte. Fix in `ColumnView.swift`: ein `Color.clear` liegt jetzt als `ZStack`-Ebene permanent unter der `ScrollView` und garantiert so immer eine volle, greifbare Dropfläche über die ganze Spaltenhöhe — unabhängig davon, ob und wie viele Karten die Spalte enthält.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft gezielt: neue, leere Liste anlegen und eine Karte aus einer anderen Spalte hineinziehen.
+
+## Session 1 – Fix 11
+
+- **Mitgeliefertes `.icns`-Icon überall eingebunden**: `Resources/AppIcon.icns` (vom Nutzer bereitgestellt) ersetzt das bisherige `Resources/AppIcon.png`. `build.sh` kopiert es jetzt direkt ins App-Bundle statt zur Build-Zeit ein `.icns` aus dem PNG zu generieren. `HeaderView.swift` lädt das Logo jetzt aus `AppIcon.icns` (`NSImage` liest `.icns` direkt). `AppDelegate.swift`: Menüleisten-Icon nutzt jetzt ebenfalls dieses Icon (auf 18pt skaliert, `isTemplate = false`) statt des bisherigen SF-Symbol-Platzhalters.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, ob sowohl Menüleisten-Icon als auch Header-Logo das neue Icon zeigen.

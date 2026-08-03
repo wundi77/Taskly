@@ -12,7 +12,7 @@ struct HeaderView: View {
     @Environment(\.theme) private var theme
 
     private static let appIcon: NSImage = {
-        if let path = Bundle.main.path(forResource: "AppIcon", ofType: "png"),
+        if let path = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
            let image = NSImage(contentsOfFile: path) {
             return image
         }

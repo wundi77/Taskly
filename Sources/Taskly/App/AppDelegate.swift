@@ -20,12 +20,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow?
     let store = TasklyStore()
 
+    /// The designed app icon, scaled down for the menu bar. Not a template
+    /// image: this is Taskly's actual colored logo, not a monochrome symbol.
+    private static let statusBarIcon: NSImage = {
+        guard let path = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+              let image = NSImage(contentsOfFile: path) else {
+            return NSImage(systemSymbolName: "checklist", accessibilityDescription: "Taskly") ?? NSImage()
+        }
+        image.size = NSSize(width: 18, height: 18)
+        image.isTemplate = false
+        return image
+    }()
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "checklist", accessibilityDescription: "Taskly")
+            button.image = Self.statusBarIcon
             button.action = #selector(handleStatusItemClick)
             button.target = self
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])

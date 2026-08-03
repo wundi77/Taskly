@@ -33,24 +33,9 @@ mkdir -p "${APP_BUNDLE}/Contents/Resources"
 cp "$BIN_PATH" "${APP_BUNDLE}/Contents/MacOS/${APP_NAME}"
 cp "Packaging/Info.plist" "${APP_BUNDLE}/Contents/Info.plist"
 
-# Plain PNG copy, used at runtime by HeaderView to show the logo next to "Taskly".
-cp "Resources/AppIcon.png" "${APP_BUNDLE}/Contents/Resources/AppIcon.png"
-
-# Build a proper multi-resolution .icns from the source PNG for the Finder/Dock
-# icon (iconutil/sips are macOS-only tools, available on your Mac at build time).
-if command -v iconutil >/dev/null 2>&1 && command -v sips >/dev/null 2>&1; then
-    ICONSET_DIR="$(mktemp -d)/AppIcon.iconset"
-    mkdir -p "$ICONSET_DIR"
-    for size in 16 32 128 256 512; do
-        sips -z $size $size "Resources/AppIcon.png" --out "${ICONSET_DIR}/icon_${size}x${size}.png" >/dev/null
-        double=$((size * 2))
-        sips -z $double $double "Resources/AppIcon.png" --out "${ICONSET_DIR}/icon_${size}x${size}@2x.png" >/dev/null
-    done
-    iconutil -c icns "$ICONSET_DIR" -o "${APP_BUNDLE}/Contents/Resources/AppIcon.icns"
-    rm -rf "$(dirname "$ICONSET_DIR")"
-else
-    echo "Hinweis: iconutil/sips nicht gefunden, überspringe .icns-Erzeugung (App funktioniert trotzdem)."
-fi
+# Ship the designed .icns as-is (Finder/Dock icon, header logo, and menu bar
+# icon are all loaded from this one file at runtime via NSImage).
+cp "Resources/AppIcon.icns" "${APP_BUNDLE}/Contents/Resources/AppIcon.icns"
 
 echo "==> Fertig. Starte ${APP_BUNDLE} ..."
 open "$APP_BUNDLE"
