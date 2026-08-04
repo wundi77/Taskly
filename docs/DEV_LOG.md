@@ -95,3 +95,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Finder zeigte weiterhin das generische Platzhalter-Icon** (Cmd+I), obwohl `Packaging/Info.plist`/`AppIcon.icns` korrekt eingebunden sind — typisches Icon-Caching von Finder/LaunchServices bei einem unsignierten, am selben Pfad wiederholt neu gebauten `.app`-Bundle. Fix: `build.sh` führt am Ende jetzt `touch` auf das Bundle, `lsregister -f` (LaunchServices-Neuregistrierung) und `killall Finder` aus, damit das aktuelle Icon ohne manuelles Zutun sofort sichtbar wird.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft per Cmd+I, ob Finder jetzt das echte Icon zeigt.
+
+## Session 1 – Fix 13
+
+- **Neues Icon-Design integriert**: Nutzer lieferte ein `.icon`-Bundle (Apples neues Icon-Composer-Format aus Xcode 26, mit `icon.json` + Ebenen-PNG) statt eines einfachen Bilds/`.icns`. Da dieses Bundle-Format nur mit Xcode/Icon-Composer-Tooling zu einem `.icns` kompiliert werden kann (hier nicht verfügbar, und auch auf einem normalen Mac ohne aktuelles Xcode nicht per Kommandozeile), wurde stattdessen die enthaltene flache Vorschau-Grafik (`taskly.icon/Assets/taskly 2.png`, 1024×1024, bereits mit Verlaufshintergrund/Form gerendert) verwendet: daraus alle Standard-Icon-Auflösungen (16 bis 1024px, inkl. @2x) erzeugt und zu einem regulären `Resources/AppIcon.icns` zusammengesetzt (ersetzt das vorherige Icon). Quell-PNG zusätzlich als `Resources/AppIcon-source.png` im Repo abgelegt, falls später erneut ein `.icns` daraus gebaut werden muss. `build.sh`/`HeaderView.swift`/`AppDelegate.swift` brauchten keine Änderung, da sie bereits `AppIcon.icns` referenzieren (siehe Fix 11).
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, ob überall (Menüleiste, Header, Finder/Cmd+I) jetzt das neue Icon-Design erscheint.
