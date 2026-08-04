@@ -107,3 +107,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Icon-Quelle ersetzt durch fertigen macOS-Standard-Export**: Nutzer lieferte diesmal einen bereits fertigen `1024x1024@1x`-PNG-Export (mit transparentem Rand außerhalb der abgerundeten Quadrat-Form, exakt im macOS-App-Icon-Format) statt des Icon-Composer-Bundles. Daraus erneut alle Standardauflösungen (16–1024px, inkl. @2x) erzeugt und zu `Resources/AppIcon.icns` zusammengesetzt (ersetzt die vorherige Fix-13-Version); `Resources/AppIcon-source.png` entsprechend aktualisiert.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft überall (Menüleiste, Header, Finder/Cmd+I).
+
+## Session 1 – Fix 15
+
+- **Menüleisten-Icon zurück auf das ursprüngliche weiße SF-Symbol**: Nur das Menüleisten-Icon (`AppDelegate.swift`) nutzt wieder das kleine weiße Template-Icon ("checklist"), wie vor Fix 11. Header-Logo und Finder-/App-Icon (`AppIcon.icns`, neues Design) bleiben unverändert.
+
+**Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, dass die Menüleiste wieder das weiße Symbol zeigt, während Header/Finder beim neuen Icon bleiben.
