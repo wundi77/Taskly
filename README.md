@@ -29,6 +29,10 @@ Boards/Spalten/Karten werden **nur lokal** als JSON unter `~/Library/Application
 
 Siehe `docs/ARCHITECTURE.md` für die Architektur (Menüleisten-Fenster-Logik, Datenmodell, Drag & Drop, Theming) sowie `docs/DEV_LOG.md` für den Entwicklungsverlauf.
 
+## Anleitung für Nutzer
+
+Eine kurze, bebilderte Anleitung für neue Nutzer liegt unter [`docs/Taskly-Anleitung.pdf`](docs/Taskly-Anleitung.pdf) (Quelle: `docs/user-guide.html`).
+
 ## Bekannte Einschränkungen
 
 - Die App ist unsigniert (kein Apple-Entwickler-Zertifikat) — beim ersten Start ggf. über Systemeinstellungen > Datenschutz & Sicherheit freigeben, falls Gatekeeper warnt.

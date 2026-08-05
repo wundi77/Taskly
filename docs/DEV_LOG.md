@@ -113,3 +113,9 @@ Rückmeldung anhand von Screenshots umgesetzt:
 - **Menüleisten-Icon zurück auf das ursprüngliche weiße SF-Symbol**: Nur das Menüleisten-Icon (`AppDelegate.swift`) nutzt wieder das kleine weiße Template-Icon ("checklist"), wie vor Fix 11. Header-Logo und Finder-/App-Icon (`AppIcon.icns`, neues Design) bleiben unverändert.
 
 **Nächste Schritte:** Nutzer baut erneut mit `./build.sh` und prüft, dass die Menüleiste wieder das weiße Symbol zeigt, während Header/Finder beim neuen Icon bleiben.
+
+## Session 1 – Fix 16
+
+- **Kurze PDF-Anleitung für neue Nutzer ergänzt**: `docs/user-guide.html` (Quelle, im Taskly-Look mit Teal-Akzenten) wird via Headless-Chromium zu `docs/Taskly-Anleitung.pdf` gerendert (ein Seite, deutsch): App öffnen/schließen über das Menüleisten-Icon inkl. Rechtsklick-Menü, Boards, Listen, Karten anlegen/bearbeiten, Drag & Drop, Suche/Theme-Umschalter, Hinweis zu lokaler Datenspeicherung. In README verlinkt.
+
+**Nächste Schritte:** Keine offenen Punkte aus dieser Session; PDF wurde dem Nutzer direkt zugeschickt.

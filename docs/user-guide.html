@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Taskly – Anleitung</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: #1a1c1e;
+    background: #ffffff;
+  }
+  .page {
+    width: 210mm;
+    padding: 16mm 18mm;
+    position: relative;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 4mm;
+  }
+  .logo {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #008282, #006767);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  h1 {
+    font-size: 26px;
+    margin: 0;
+    color: #00504f;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 12.5px;
+    color: #5a6765;
+    margin: 2px 0 0;
+  }
+  .intro {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #33393a;
+    background: #f3f9f8;
+    border: 1px solid #d7e5e2;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 5mm 0 6mm;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm 6mm;
+  }
+  .card {
+    border: 1px solid #e2e8e7;
+    border-radius: 12px;
+    padding: 10px 13px 12px;
+    background: #fbfdfd;
+    break-inside: avoid;
+  }
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #00504f;
+    margin: 0 0 4px;
+  }
+  .badge {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: #e6f4f1;
+    color: #006767;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .card p {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #3d4949;
+    margin: 0 0 4px;
+  }
+  .card ul {
+    margin: 4px 0 0;
+    padding-left: 15px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #3d4949;
+  }
+  .card ul li { margin-bottom: 2px; }
+  kbd {
+    background: #eef1f1;
+    border: 1px solid #d5dcdb;
+    border-radius: 4px;
+    padding: 0px 5px;
+    font-size: 10px;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .footer {
+    margin-top: 6mm;
+    padding-top: 4mm;
+    border-top: 1px solid #e2e8e7;
+    font-size: 10px;
+    color: #6d7979;
+    display: flex;
+    justify-content: space-between;
+  }
+  .wide { grid-column: 1 / -1; }
+  .pill {
+    display: inline-block;
+    background: #006767;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 1px 8px;
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="logo">✓</div>
+    <div>
+      <h1>Taskly – kurz erklärt</h1>
+      <p class="subtitle">Die Kanban-App für deine Menüleiste</p>
+    </div>
+  </div>
+
+  <div class="intro">
+    Taskly ist eine kleine Kanban-App (im Stil von Trello), die als <strong>Menüleisten-App</strong>
+    im Hintergrund läuft. Du organisierst Aufgaben in <strong>Boards</strong> → <strong>Listen</strong> →
+    <strong>Karten</strong> und kannst Karten frei zwischen Listen hin- und herziehen. Alle Daten bleiben
+    ausschließlich lokal auf deinem Mac gespeichert.
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title"><span class="badge">1</span>App öffnen &amp; schließen</div>
+      <p>Taskly läuft dauerhaft als Icon oben in der Menüleiste – kein Fenster im Dock.</p>
+      <ul>
+        <li><strong>Klick</strong> auf das Icon: Fenster erscheint / verschwindet wieder.</li>
+        <li><strong>Rechtsklick</strong> auf das Icon öffnet ein Menü:</li>
+        <li>– „Beim Start automatisch laden“ (Häkchen an/aus)</li>
+        <li>– „Beenden“, um Taskly komplett zu schließen</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">2</span>Boards</div>
+      <p>Ein Board ist ein eigenständiges Projekt/Thema, angezeigt als Reiter oben im Header.</p>
+      <ul>
+        <li><span class="pill">+ Neues Board</span> oben rechts anlegen – Name direkt eintippen, mit <kbd>Return</kbd> bestätigen.</li>
+        <li>Rechtsklick auf einen Board-Reiter: umbenennen oder löschen.</li>
+        <li>Klick auf einen Reiter wechselt das aktive Board.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">3</span>Listen (Spalten)</div>
+      <p>Jedes Board hat beliebig viele Listen nebeneinander, z. B. „Offen“, „In Arbeit“, „Fertig“.</p>
+      <ul>
+        <li><span class="pill">+ Weitere Liste</span> am Ende der Spalten legt eine neue Liste an.</li>
+        <li>„⋯“-Menü im Listenkopf: Liste umbenennen oder löschen.</li>
+        <li>Die Zahl neben dem Titel zeigt die Kartenanzahl.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">4</span>Karten anlegen &amp; bearbeiten</div>
+      <p>„+ weitere Karte“ am Ende einer Liste legt eine neue Karte an. Klick auf eine Karte öffnet die Details.</p>
+      <ul>
+        <li>Titel, Beschreibung frei editierbar</li>
+        <li>Farbige Labels zur Kategorisierung</li>
+        <li>Fälligkeitsdatum (überfällige Karten werden rot markiert)</li>
+        <li>Checkliste mit Fortschrittsbalken auf der Karte</li>
+        <li>„Erledigt“-Status &amp; „Karte löschen“</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">5</span>Karten verschieben</div>
+      <p>Karten lassen sich frei per Maus ziehen:</p>
+      <ul>
+        <li><strong>Innerhalb</strong> einer Liste: Reihenfolge von oben nach unten ändern.</li>
+        <li><strong>Zwischen</strong> Listen: Karte in eine andere Liste ziehen – auch in eine komplett leere Liste.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">6</span>Suche &amp; Darstellung</div>
+      <p>Im Header findest du zusätzlich:</p>
+      <ul>
+        <li>🔍 Suchfeld – filtert Karten im aktiven Board nach Titel.</li>
+        <li>„Dunkel“ / „Hell“-Umschalter für das Erscheinungsbild.</li>
+      </ul>
+    </div>
+
+    <div class="wide card">
+      <div class="card-title"><span class="badge">i</span>Gut zu wissen</div>
+      <p>
+        Alle Boards, Listen und Karten werden ausschließlich <strong>lokal</strong> auf deinem Mac gespeichert
+        (kein Cloud-Sync). Änderungen werden automatisch beim nächsten Klick auf „Fertig“ bzw. direkt
+        bei Aktionen wie Verschieben oder Löschen gesichert.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Taskly</span>
+    <span>Kurzanleitung für neue Nutzer</span>
+  </div>
+
+</div>
+</body>
+</html>
